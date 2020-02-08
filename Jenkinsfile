@@ -26,7 +26,7 @@ pipeline {
           steps {
             sh '''
                 URL=http://jenkins-html-publisher-bucket.s3-website-us-east-1.amazonaws.com/
-                status_code=$(curl --write-out %{http_code} --silent --output /dev/null &URL)
+                status_code=$(curl --write-out %{http_code} --silent --output /dev/null $URL)
                 if [[ "$status_code" == "200" ]] ; then
                   echo "Site is up and running"
                 else
