@@ -22,7 +22,37 @@ Manual steps required:
 - Connecting to a GitHub repo
 - Set up AWS credentials in Jenkins
 
-## How to start
+### AWS Steps
+1) Log in to the AWS management console. Find and select the IAM (Identify and Access Management).
+
+2) Create a new group, select "Group" from the left sidebar, name it "jenkins", and attach the following policies:
+
+- AmazonEC2FullAccess
+- AmazonVPCFullAccess
+- AmazonS3FullAccess.
+Hit Next Step, review, and then "Create Group."
+
+3) Create a new user, select "Users" from the left sidebar, then "Add user," and use "jenkins" as the user name. Click on both "programmatic access" and "AWS management console access." The defaults for auto-generated password and "users must create a new password at next sign-in" are OK and should be kept. Hit "Next", and add the "jenkins" user to the "jenkins" group. Hit "next," no need to add "Tags." Review, and accept. Capture the Access Key, Secret Access Key, and the password so that you can log in as that user (easy to just download the csv file).
+
+To sign in as this new IAM user, sign out of the AWS console, then use the following URL, where your_aws_account_id is your AWS account number without the hyphens (for example, if your AWS account number is 1234-5678-9012, your AWS account ID is 123456789012):
+
+https://your_aws_account_id.signin.aws.amazon.com/console/
+
+This is available in the 'Users' section of the sidebar, under the 'jenkins' user link, in the Security credentials tab, as a "Console sign-in link."
+
+Upon signing in, go through the "renew your password" steps.
+
+4) Create a new key pair for access to your instance(s).
+
+5) Launch EC2 instance.
+
+6) Create corresponding Security Group. Select "Security Groups." Under name, use: 'jenkins', description: "basic Jenkins security group," VPC should have the default one used. Click Add Rule: Custom TCP Rule, Protocol: TCP, Port Range 8080, Source 0.0.0.0/0 Then add the SSH rule: Protocol: SSH, Port range: 22, From source, use the dropdown and select "My IP."
+
+7) Go back to instances, and right click the running instance, select Networking and change the security groups. Select the Jenkins security group that was created previously.
+
+8) To connect to your instance using your key pair.
+
+## Setting up your repository
 
 Minimal setup of your repository should include:
  - static *.html file
